@@ -1,0 +1,14 @@
+services:
+  spreadsheet_server:
+    image: spreadsheet_server
+    container_name: spreadsheet_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5555:5555"
+    volumes:
+      - ./spreadsheets:/home/libreuser/spreadsheet_server/spreadsheets
+      - ./saved_spreadsheets:/home/libreuser/spreadsheet_server/saved_spreadsheets
+      - ./log:/home/libreuser/spreadsheet_server/log
+    restart: always

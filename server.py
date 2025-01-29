@@ -38,7 +38,7 @@ SOFFICE_LOG = os.path.join(this_dir, "log", "soffice.log")
 LOG_FILE = os.path.join(this_dir, "log", "server.log")
 
 SOFFICE_PROCNAME = "soffice.bin"
-HOST, PORT = "localhost", 5555
+HOST, PORT = "0.0.0.0", 5555
 SOFFICE_PIPE = "soffice_headless"
 MONITOR_FREQ = 5  # In seconds
 LOG_LEVEL = logging.DEBUG
