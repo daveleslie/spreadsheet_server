@@ -1,4 +1,3 @@
-# Use a minimal and compatible base image
 FROM ubuntu:24.04
 
 # Set environment variables to configure LibreOffice in headless mode
@@ -19,17 +18,8 @@ RUN apt-get update && \
   python3-virtualenv \
   && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user for security
-# RUN useradd -m -s /bin/bash libreuser
-
 # Set the working directory and copy project files
 WORKDIR /home/ubuntu/spreadsheet_server
-
-# Create volume mount points
-RUN mkdir -p spreadsheets saved_spreadsheets log
-
-# Ensure volume mount point directories are owned by the non-root user
-# RUN chown -R libreuser:libreuser spreadsheets saved_spreadsheets log
 
 COPY . .
 
@@ -38,13 +28,7 @@ RUN mkdir -p /home/ubuntu/.virtualenvs && \
   virtualenv --system-site-packages -p python3 /home/ubuntu/.virtualenvs/spreadsheet_server && \
   /home/ubuntu/.virtualenvs/spreadsheet_server/bin/pip install --no-cache-dir -r requirements.txt
 
-# Ensure directories are owned by the non-root user
-RUN chown -R ubuntu:ubuntu /home/ubuntu/spreadsheet_server
-
-# Switch to non-root user
-USER ubuntu
-
-# Expose the necessary port (adjust if needed)
+# Expose the necessary port
 EXPOSE 5555
 
 # Use `tini` to manage processes cleanly
