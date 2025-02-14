@@ -3,8 +3,8 @@ FROM ubuntu:24.04
 
 # Set environment variables to configure LibreOffice in headless mode
 ENV DEBIAN_FRONTEND=noninteractive \
-  LIBREOFFICE_PROFILE=/home/libreuser/.config/libreoffice \
-  HOME=/home/libreuser
+  LIBREOFFICE_PROFILE=/home/ubuntu/.config/libreoffice \
+  HOME=/home/ubuntu
 
 # Install necessary dependencies
 RUN apt-get update && \
@@ -20,29 +20,29 @@ RUN apt-get update && \
   && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user for security
-RUN useradd -m -s /bin/bash libreuser
+# RUN useradd -m -s /bin/bash libreuser
 
 # Set the working directory and copy project files
-WORKDIR /home/libreuser/spreadsheet_server
+WORKDIR /home/ubuntu/spreadsheet_server
 
 # Create volume mount points
 RUN mkdir -p spreadsheets saved_spreadsheets log
 
 # Ensure volume mount point directories are owned by the non-root user
-RUN chown -R libreuser:libreuser spreadsheets saved_spreadsheets log
+# RUN chown -R libreuser:libreuser spreadsheets saved_spreadsheets log
 
 COPY . .
 
 # Create a virtual environment using virtualenv and install dependencies
-RUN mkdir -p /home/libreuser/.virtualenvs && \
-  virtualenv --system-site-packages -p python3 /home/libreuser/.virtualenvs/spreadsheet_server && \
-  /home/libreuser/.virtualenvs/spreadsheet_server/bin/pip install --no-cache-dir -r requirements.txt
+RUN mkdir -p /home/ubuntu/.virtualenvs && \
+  virtualenv --system-site-packages -p python3 /home/ubuntu/.virtualenvs/spreadsheet_server && \
+  /home/ubuntu/.virtualenvs/spreadsheet_server/bin/pip install --no-cache-dir -r requirements.txt
 
 # Ensure directories are owned by the non-root user
-RUN chown -R libreuser:libreuser /home/libreuser/spreadsheet_server
+RUN chown -R ubuntu:ubuntu /home/ubuntu/spreadsheet_server
 
 # Switch to non-root user
-USER libreuser
+USER ubuntu
 
 # Expose the necessary port (adjust if needed)
 EXPOSE 5555
@@ -52,4 +52,4 @@ ENTRYPOINT ["/usr/bin/tini", "--"]
 
 # Command to start both LibreOffice in headless mode and `spreadsheet_server`
 CMD ["bash", "-c", "soffice --calc --headless --nologo --nofirststartwizard --accept='socket,host=0.0.0.0,port=2002;urp;' & \
-  cd /home/libreuser/spreadsheet_server && /home/libreuser/.virtualenvs/spreadsheet_server/bin/python server.py"]
+  cd /home/ubuntu/spreadsheet_server && /home/ubuntu/.virtualenvs/spreadsheet_server/bin/python server.py"]

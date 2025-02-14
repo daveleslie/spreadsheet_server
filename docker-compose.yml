@@ -8,7 +8,7 @@ services:
     ports:
       - "5555:5555"
     volumes:
-      - ./spreadsheets:/home/libreuser/spreadsheet_server/spreadsheets
-      - ./saved_spreadsheets:/home/libreuser/spreadsheet_server/saved_spreadsheets
-      - ./log:/home/libreuser/spreadsheet_server/log
+      - ./spreadsheets:/home/ubuntu/spreadsheet_server/spreadsheets
+      - ./saved_spreadsheets:/home/ubuntu/spreadsheet_server/saved_spreadsheets
+      - ./log:/home/ubuntu/spreadsheet_server/log
     restart: always
