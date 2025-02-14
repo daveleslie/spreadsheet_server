@@ -1,5 +1,5 @@
 # Use a minimal and compatible base image
-FROM debian:bookworm-slim
+FROM ubuntu:24.04
 
 # Set environment variables to configure LibreOffice in headless mode
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -24,6 +24,13 @@ RUN useradd -m -s /bin/bash libreuser
 
 # Set the working directory and copy project files
 WORKDIR /home/libreuser/spreadsheet_server
+
+# Create volume mount points
+RUN mkdir -p spreadsheets saved_spreadsheets log
+
+# Ensure volume mount point directories are owned by the non-root user
+RUN chown -R libreuser:libreuser spreadsheets saved_spreadsheets log
+
 COPY . .
 
 # Create a virtual environment using virtualenv and install dependencies
