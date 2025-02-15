@@ -12,3 +12,10 @@ services:
       - ./saved_spreadsheets:/home/ubuntu/spreadsheet_server/saved_spreadsheets
       - ./log:/home/ubuntu/spreadsheet_server/log
     restart: always
+    networks:
+        - spreadsheet_server
+
+networks:
+  spreadsheet_server:
+    name: spreadsheet_server
+    driver: bridge
